@@ -1,5 +1,8 @@
 "use client";
 
+import { Cctv } from 'lucide-react';
+
+
 const STATS = [
   { n: "5,000+", label: "Cities with FLOCK" },
   { n: "4B+",   label: "Plate reads logged" },
@@ -7,10 +10,10 @@ const STATS = [
 ];
 
 
-
+/*
 const TICKER_TEXT =
   "FLOCK SAFETY OPERATES IN 5,000+ CITIES \u00a0·\u00a0 OVER 4 BILLION LICENSE PLATE READS LOGGED \u00a0·\u00a0 CONTRACTS APPROVED WITHOUT PUBLIC DEBATE \u00a0·\u00a0 YOUR MOVEMENTS ARE BEING RECORDED \u00a0·\u00a0 ADMIN INTERFACES EXPOSED TO THE PUBLIC INTERNET \u00a0·\u00a0 ";
-/*
+
 Ticker component idea — could be added back in later if we want it
       <div className="flex-none overflow-hidden whitespace-nowrap border-b border-[#1A1A1A] bg-[#C0392B] text-[#F2EDE4] py-1.5">
         <div className="ticker-inner text-[0.65rem] tracking-[0.15em] font-bold">
@@ -42,7 +45,7 @@ export default function HomePage() {
           <p className="text-[0.8rem] leading-[1.8] opacity-70 max-w-[420px]">
             FLOCK Safety sells automated license plate reader cameras to cities and police
             departments nationwide. Every time you drive past one, your plate number,
-            location, and timestamp are logged — and shared across a network of 2,000+
+            location, identifiable information, and timestamp are logged — and shared across a network of 2,000+
             agencies, often with no judicial oversight and no way to opt out.
           </p>
 
@@ -69,12 +72,10 @@ export default function HomePage() {
           <div className="flex-none flex items-center justify-between border-b border-[#1A1A1A] px-4 py-2 bg-[#1A1A1A] text-[#F2EDE4]">
             <div className="flex items-center gap-3">
               {/* Camera icon */}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="3" width="12" height="9" rx="1" stroke="#C0392B" strokeWidth="1.2"/>
-                <circle cx="7" cy="7.5" r="2.2" stroke="#C0392B" strokeWidth="1.2"/>
-                <path d="M4.5 3V2.5C4.5 2.2 4.7 2 5 2H9C9.3 2 9.5 2.2 9.5 2.5V3" stroke="#C0392B" strokeWidth="1.2"/>
-                <circle cx="11.5" cy="4.5" r="0.6" fill="#C0392B"/>
-              </svg>
+              <Cctv 
+                className="text-[#C0392B]"
+                size={20}
+              />
               <div>
                 <div className="text-[0.62rem] font-bold tracking-[0.12em] uppercase">
                   FLOCK Camera Map
@@ -131,7 +132,7 @@ export default function HomePage() {
           <div className="flex-1 relative min-h-0">
             <iframe
               title="FLOCK Camera Map — powered by deflock.org"
-              src="https://deflock.org"
+              src="https://maps.deflock.org"
               className="absolute inset-0 w-full h-full border-none"
               loading="lazy"
               referrerPolicy="no-referrer"

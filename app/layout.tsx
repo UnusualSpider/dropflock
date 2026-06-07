@@ -40,7 +40,7 @@ export default function RootLayout({
         <header className="flex-none border-b-2 bg-[#F2EDE4] border-[#1A1A1A] px-8 py-4 flex items-center justify-between">
           <div>
             <div className="bebas text-[2rem] text-[#1A1A1A] leading-none tracking-[0.04em]">
-              DROP<span className="text-[#C0392B]">FLOCK</span>
+              <a href="/">DROP<span className="text-[#C0392B]">FLOCK</span></a>
             </div>
             <div className="text-[0.55rem] tracking-[0.18em] uppercase opacity-40 mt-0.5">
               Know your surveillance. Know your rights.

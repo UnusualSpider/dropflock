@@ -4,8 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dropflock/backend/internal/db"
-	"github.com/dropflock/backend/internal/models"
+	"backend/internal/db"
+
+	"backend/internal/models"
+
 	"github.com/gin-gonic/gin"
 )
 

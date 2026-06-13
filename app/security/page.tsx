@@ -135,6 +135,7 @@ function FindingCard({ f }: { f: (typeof FINDINGS)[0] }) {
   return (
     <div className="border border-[#1A1A1A] mb-3">
       <button
+        type="button"
         onClick={() => setOpen((o) => !o)}
         className="w-full text-left px-5 py-4 flex items-start gap-4 bg-transparent border-none cursor-pointer group"
       >
@@ -204,7 +205,7 @@ export default function SecurityPage() {
           { n: "60+", label: "Cameras exposed publicly" },
         ].map((s, i) => (
           <div
-            key={i}
+            key={i.toLocaleString()}
             className={`px-6 py-4 flex items-center gap-3 ${i < 3 ? "border-r border-[#1A1A1A]" : ""}`}
           >
             <div className="bebas text-[2rem] leading-none text-[#C0392B]">{s.n}</div>
@@ -311,7 +312,7 @@ export default function SecurityPage() {
               <div className="absolute left-[5px] top-0 bottom-0 w-px bg-[#1A1A1A] opacity-15" />
 
               {TIMELINE.map((t, i) => (
-                <div key={i} className="relative pl-5 mb-5">
+                <div key={i.toLocaleString()} className="relative pl-5 mb-5 grid gap-1">
                   {/* Dot */}
                   <div
                     className={`absolute left-0 top-[5px] w-[11px] h-[11px] border-2 ${

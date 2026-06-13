@@ -115,7 +115,7 @@ export default function HomePage() {
           <div className="flex-none flex border-b border-[#1A1A1A]">
             {STATS.map((s, i) => (
               <div
-                key={i}
+                key={i.toLocaleString()}
                 className={`flex-1 px-4 py-2.5 flex items-center gap-3 ${i < STATS.length - 1 ? "border-r border-[#1A1A1A]" : ""}`}
               >
                 <div className={`bebas text-[1.6rem] leading-none ${s.red ? "text-[#C0392B]" : ""}`}>

@@ -126,7 +126,7 @@ function IssueRow({ issue, index }: { issue: typeof ISSUES[0]; index: number }) 
       {open && (
         <div className="px-8 pb-7 ml-14 border-l-2 border-[#C0392B] ml-[3.5rem]">
           {issue.detail.split("\n\n").map((para, i) => (
-            <p key={i} className="text-[0.78rem] leading-[1.9] opacity-70 mb-4 max-w-[640px]">
+            <p key={i.toLocaleString()} className="text-[0.78rem] leading-[1.9] opacity-70 mb-4 max-w-[640px]">
               {para}
             </p>
           ))}

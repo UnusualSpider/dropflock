@@ -45,8 +45,8 @@ export default function HomePage() {
           <p className="text-[0.8rem] leading-[1.8] opacity-70 max-w-[420px]">
             FLOCK Safety sells automated license plate reader cameras to cities and police
             departments nationwide. Every time you drive past one, your plate number,
-            location, identifiable information, and timestamp are logged — and shared across a network of 2,000+
-            agencies, often with no judicial oversight and no way to opt out.
+            location, identifiable information, and timestamp are logged. The data is then
+            shared across a network of 2,000+ agencies, often with no judicial oversight and no way to opt out.
           </p>
 
           <div className="flex gap-3">

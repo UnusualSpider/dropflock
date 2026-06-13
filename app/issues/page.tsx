@@ -97,7 +97,7 @@ function IssueRow({ issue, index }: { issue: typeof ISSUES[0]; index: number }) 
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full text-left px-8 py-5 flex items-start gap-6 group cursor-pointer bg-transparent border-none"
+        className="w-full text-left px-5 sm:px-8 py-5 flex items-start gap-3 sm:gap-6 group cursor-pointer bg-transparent border-none"
       >
 
 
@@ -108,7 +108,7 @@ function IssueRow({ issue, index }: { issue: typeof ISSUES[0]; index: number }) 
 
         {/* Title + summary */}
         <div className="flex-1 min-w-0">
-          <div className="bebas text-[1.35rem] leading-tight tracking-[0.02em] group-hover:text-[#C0392B] transition-colors">
+          <div className="bebas text-[1.2rem] sm:text-[1.35rem] leading-tight tracking-[0.02em] group-hover:text-[#C0392B] transition-colors">
             {issue.title}
           </div>
           <div className="text-[0.72rem] opacity-55 leading-[1.7] mt-1 max-w-[680px]">
@@ -124,7 +124,7 @@ function IssueRow({ issue, index }: { issue: typeof ISSUES[0]; index: number }) 
 
       {/* Expanded detail */}
       {open && (
-        <div className="px-8 pb-7 ml-14 border-l-2 border-[#C0392B] ml-[3.5rem]">
+        <div className="px-5 sm:px-8 pb-7 sm:ml-14 border-l-2 border-[#C0392B] sm:ml-[3.5rem]">
           {issue.detail.split("\n\n").map((para, i) => (
             <p key={i.toLocaleString()} className="text-[0.78rem] leading-[1.9] opacity-70 mb-4 max-w-[640px]">
               {para}
@@ -159,17 +159,17 @@ export default function IssuesPage() {
     <main className="flex-1 bg-[#F2EDE4] text-[#1A1A1A] font-mono">
 
       {/* Page header */}
-      <div className="border-b-2 border-[#1A1A1A] px-8 py-10 flex items-end justify-between">
+      <div className="border-b-2 border-[#1A1A1A] px-5 sm:px-8 py-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8">
         <div>
           <span className="text-[0.6rem] tracking-[0.14em] uppercase border border-[#1A1A1A] px-1.5 py-0.5 inline-block mb-4 opacity-60">
             The Problems
           </span>
-          <h1 className="bebas text-[clamp(2.8rem,5vw,4.5rem)] leading-[0.9] tracking-[0.02em]">
+          <h1 className="bebas text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.9] tracking-[0.02em]">
             WHY FLOCK<br />
             <span className="text-[#C0392B]">IS A PROBLEM</span>
           </h1>
         </div>
-        <p className="text-[0.72rem] leading-[1.8] opacity-60 max-w-[380px] text-right pb-1">
+        <p className="text-[0.72rem] leading-[1.8] opacity-60 max-w-[380px] md:text-right pb-1">
           Six documented issues with FLOCK Safety's automated license plate
           reader network — from constitutional concerns to security failures to
           the total absence of democratic oversight.
@@ -184,16 +184,16 @@ export default function IssuesPage() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="border-t-2 border-[#1A1A1A] px-8 py-10 flex items-center justify-between">
+      <div className="border-t-2 border-[#1A1A1A] px-5 sm:px-8 py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-          <div className="bebas text-[1.6rem] tracking-[0.02em]">
+          <div className="bebas text-[1.4rem] sm:text-[1.6rem] tracking-[0.02em]">
             READY TO PUSH BACK?
           </div>
           <div className="text-[0.7rem] opacity-50 tracking-[0.08em] mt-1">
             Knowing the problem is step one. Here's what to do next.
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <a
             href="/act"
             className="bg-[#C0392B] text-[#F2EDE4] border border-[#C0392B] px-6 py-2.5 text-[0.72rem] font-bold tracking-[0.1em] uppercase no-underline transition-colors hover:bg-[#F2EDE4] hover:text-[#C0392B]"

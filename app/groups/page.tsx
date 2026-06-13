@@ -185,9 +185,9 @@ function GroupMap({
   const selected = allGroups.find((g) => g.id === selectedId) ?? null;
 
   return (
-    <div className="flex h-full min-h-0">
+    <div className="flex flex-col md:flex-row h-full min-h-0">
       {/* SVG map */}
-      <div className="flex-1 relative bg-[#1A1A1A]">
+      <div className="flex-1 relative bg-[#1A1A1A] min-h-[280px] md:min-h-0">
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" style={{ display: "block" }}>
           {/* Background */}
           <rect width={W} height={H} fill="#1A1A1A" />
@@ -255,7 +255,7 @@ function GroupMap({
       </div>
 
       {/* Side panel — selected group or instructions */}
-      <div className="w-[300px] flex-none border-l border-[#1A1A1A] bg-[#F2EDE4] flex flex-col">
+      <div className="w-full md:w-[300px] flex-none border-t md:border-t-0 md:border-l border-[#1A1A1A] bg-[#F2EDE4] flex flex-col max-h-[40vh] md:max-h-none overflow-y-auto md:overflow-visible">
         {selected?.lat ? (
           <div className="p-5 flex flex-col h-full">
             <div className="flex items-start justify-between mb-3">
@@ -416,20 +416,20 @@ export default function GroupsPage() {
   };
 
   return (
-    <main className="flex-1 bg-[#F2EDE4] text-[#1A1A1A] font-mono flex flex-col overflow-hidden" style={{ height: "calc(100vh - 73px)" }}>
+    <main className="flex-1 bg-[#F2EDE4] text-[#1A1A1A] font-mono flex flex-col md:overflow-hidden md:h-[calc(100vh-73px)] min-h-[calc(100vh-73px)]">
 
       {/* Page header */}
-      <div className="border-b-2 border-[#1A1A1A] px-8 py-7 flex items-end justify-between flex-none">
+      <div className="border-b-2 border-[#1A1A1A] px-5 sm:px-8 py-7 flex flex-col md:flex-row md:items-end md:justify-between gap-4 flex-none">
         <div>
           <span className="text-[0.6rem] tracking-[0.14em] uppercase border border-[#1A1A1A] px-1.5 py-0.5 inline-block mb-3 opacity-60">
             Find Groups
           </span>
-          <h1 className="bebas text-[clamp(2rem,3.5vw,3.2rem)] leading-[0.9] tracking-[0.02em]">
+          <h1 className="bebas text-[clamp(1.8rem,3.5vw,3.2rem)] leading-[0.9] tracking-[0.02em]">
             YOU ARE  <span className="text-[#C0392B]">NOT ALONE</span> IN THIS.
           </h1>
         </div>
-        <div className="flex items-center gap-3">
-          <p className="text-[0.65rem] leading-[1.7] opacity-45 max-w-[260px] text-right">
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="text-[0.65rem] leading-[1.7] opacity-45 max-w-[260px]">
             30+ localities have canceled Flock contracts since 2025. Organized communities win.
           </p>
           <button
@@ -443,7 +443,7 @@ export default function GroupsPage() {
       </div>
 
       {/* Filter + view toggle bar */}
-      <div className="border-b border-[#1A1A1A] px-8 py-2.5 flex items-center gap-4 flex-none flex-wrap">
+      <div className="border-b border-[#1A1A1A] px-5 sm:px-8 py-2.5 flex items-center gap-x-4 gap-y-2 flex-none flex-wrap">
         {/* View toggle */}
         <div className="flex border border-[#1A1A1A] flex-none">
           <button
@@ -535,7 +535,7 @@ export default function GroupsPage() {
 
         {/* LIST VIEW */}
         {viewMode === "list" && (
-          <div className="h-full overflow-y-auto px-8 py-6">
+          <div className="h-full overflow-y-auto px-5 sm:px-8 py-6">
             {filtered.length === 0 ? (
               <div className="text-center py-16 opacity-30">
                 <div className="bebas text-[1.5rem] mb-2">No groups found</div>
@@ -572,11 +572,11 @@ export default function GroupsPage() {
       {/* Submit modal */}
       {showSubmit && (
         <div
-          className="fixed inset-0 bg-[#1A1A1A] bg-opacity-80 z-50 flex items-center justify-center p-6"
+          className="fixed inset-0 bg-[#1A1A1A] bg-opacity-80 z-50 flex items-center justify-center p-4 sm:p-6"
           onClick={() => setShowSubmit(false)}
         >
           <div
-            className="bg-[#F2EDE4] border-2 border-[#1A1A1A] max-w-[500px] w-full p-8"
+            className="bg-[#F2EDE4] border-2 border-[#1A1A1A] max-w-[500px] w-full max-h-[90vh] overflow-y-auto p-5 sm:p-8"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between mb-6">

@@ -21,7 +21,7 @@ function RepFinder() {
   };
 
   return (
-    <div className="border border-[#1A1A1A] p-6">
+    <div className="border border-[#1A1A1A] p-5 sm:p-6">
       <div className="text-[0.55rem] tracking-[0.14em] uppercase opacity-40 mb-3">Step 1 of 4</div>
       <div className="bebas text-[1.5rem] tracking-[0.02em] mb-1">Find Your Representatives</div>
       <p className="text-[0.7rem] leading-[1.8] opacity-55 mb-5 max-w-[480px]">
@@ -140,7 +140,7 @@ function ActionSection({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full text-left px-8 py-5 flex items-center gap-5 group cursor-pointer bg-transparent border-none hover:bg-opacity-[0.02] transition-colors"
+        className="w-full text-left px-5 sm:px-8 py-5 flex items-center gap-3 sm:gap-5 group cursor-pointer bg-transparent border-none hover:bg-opacity-[0.02] transition-colors"
       >
         {/* Step number */}
         <div className={`flex-none w-8 h-8 border flex items-center justify-center transition-all ${open ? "border-[#C0392B] bg-[#C0392B] text-[#F2EDE4]" : "border-[#1A1A1A] opacity-30 group-hover:opacity-60"}`}>
@@ -162,7 +162,7 @@ function ActionSection({
       </button>
 
       {open && (
-        <div className="px-8 pb-8 border-t border-[#1A1A1A] pt-6 bg-[#1A1A1A] bg-opacity-[0.015]">
+        <div className="px-5 sm:px-8 pb-8 border-t border-[#1A1A1A] pt-6 bg-[#1A1A1A] bg-opacity-[0.015]">
           {children}
         </div>
       )}
@@ -176,12 +176,12 @@ export default function ActPage() {
     <main className="flex-1 bg-[#F2EDE4] text-[#1A1A1A] font-mono">
 
       {/* Header */}
-      <div className="border-b-2 border-[#1A1A1A] px-8 py-10 grid grid-cols-2 gap-8 items-end">
+      <div className="border-b-2 border-[#1A1A1A] px-5 sm:px-8 py-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-start md:items-end">
         <div>
           <span className="text-[0.6rem] tracking-[0.14em] uppercase border border-[#1A1A1A] px-1.5 py-0.5 inline-block mb-4 opacity-60">
             Take Action
           </span>
-          <h1 className="bebas text-[clamp(2.8rem,5vw,4.5rem)] leading-[0.9] tracking-[0.02em]">
+          <h1 className="bebas text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.9] tracking-[0.02em]">
             KNOWING IS<br />
             <span className="text-[#C0392B]">NOT ENOUGH.</span>
           </h1>
@@ -193,14 +193,14 @@ export default function ActPage() {
             Here is exactly how to do the same.
           </p>
           {/* Win counter strip */}
-          <div className="flex gap-6 mt-5">
+          <div className="flex flex-wrap gap-x-6 gap-y-3 mt-5">
             {[
               { n: "30+", label: "Contracts canceled" },
               { n: "23+", label: "Cities since Feb 2025" },
               { n: "0", label: "Special skills required", red: true },
             ].map((s) => (
               <div key={s.label}>
-                <div className={`bebas text-[1.8rem] leading-none ${s.red ? "text-[#C0392B]" : ""}`}>{s.n}</div>
+                <div className={`bebas text-[1.6rem] sm:text-[1.8rem] leading-none ${s.red ? "text-[#C0392B]" : ""}`}>{s.n}</div>
                 <div className="text-[0.52rem] tracking-[0.1em] uppercase opacity-40 leading-tight mt-0.5">{s.label}</div>
               </div>
             ))}
@@ -209,7 +209,7 @@ export default function ActPage() {
       </div>
 
       {/* Progress bar — visual steps */}
-      <div className="border-b-2 border-[#1A1A1A] grid grid-cols-5">
+      <div className="border-b-2 border-[#1A1A1A] grid grid-cols-2 md:grid-cols-5">
         {[
           { n: "01", label: "Find Your Reps" },
           { n: "02", label: "Contact Them" },
@@ -219,10 +219,10 @@ export default function ActPage() {
         ].map((s, i) => (
           <div
             key={s.n}
-            className={`px-5 py-3 ${i < 4 ? "border-r border-[#1A1A1A]" : ""} flex items-center gap-3`}
+            className={`px-4 sm:px-5 py-3 ${i < 4 ? "md:border-r border-[#1A1A1A]" : ""} ${i % 2 === 0 ? "border-r border-[#1A1A1A]" : ""} ${i < 2 ? "border-b md:border-b-0 border-[#1A1A1A]" : ""} flex items-center gap-3`}
           >
-            <span className="bebas text-[1rem] text-[#C0392B] opacity-60">{s.n}</span>
-            <span className="text-[0.55rem] tracking-[0.1em] uppercase opacity-40">{s.label}</span>
+            <span className="bebas text-[1rem] text-[#C0392B] opacity-60 flex-none">{s.n}</span>
+            <span className="text-[0.55rem] tracking-[0.1em] uppercase opacity-40 truncate">{s.label}</span>
           </div>
         ))}
       </div>
@@ -237,21 +237,21 @@ export default function ActPage() {
         subtitle="City council + mayor + state legislators — these are the decision makers"
       >
         <RepFinder />
-        <div className="mt-4 border border-[#1A1A1A] p-4 bg-[#1A1A1A] bg-opacity-[0.03]">
-          <div className="text-[0.58rem] tracking-[0.12em] uppercase opacity-40 mb-2">Who to target, in order</div>
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { role: "City Council Member", why: "Approves or cancels contracts at the local level. Most accessible and most impactful." },
-              { role: "Mayor / City Manager", why: "Often signs contracts without a full council vote. Pressure them to bring it to a public vote." },
-              { role: "State Legislators", why: "Can pass ALPR data governance laws. Several states have moved after constituent pressure." },
-            ].map((r) => (
-              <div key={r.role} className="border border-[#1A1A1A] p-3">
-                <div className="bebas text-[0.9rem] tracking-[0.02em] mb-1">{r.role}</div>
-                <p className="text-[0.62rem] leading-[1.75] opacity-55">{r.why}</p>
-              </div>
-            ))}
+          <div className="mt-4 border border-[#1A1A1A] p-4 bg-[#1A1A1A] bg-opacity-[0.03]">
+            <div className="text-[0.58rem] tracking-[0.12em] uppercase opacity-40 mb-2">Who to target, in order</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                { role: "City Council Member", why: "Approves or cancels contracts at the local level. Most accessible and most impactful." },
+                { role: "Mayor / City Manager", why: "Often signs contracts without a full council vote. Pressure them to bring it to a public vote." },
+                { role: "State Legislators", why: "Can pass ALPR data governance laws. Several states have moved after constituent pressure." },
+              ].map((r) => (
+                <div key={r.role} className="border border-[#1A1A1A] p-3">
+                  <div className="bebas text-[0.9rem] tracking-[0.02em] mb-1">{r.role}</div>
+                  <p className="text-[0.62rem] leading-[1.75] opacity-55">{r.why}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
       </ActionSection>
 
       {/* 02 — Contact */}
@@ -261,7 +261,7 @@ export default function ActPage() {
         title="Contact Them Directly"
         subtitle="Email, call, and show up at office hours — all three, in that order"
       >
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <div className="text-[0.58rem] tracking-[0.12em] uppercase opacity-40 mb-4">
               What to say — copy these
@@ -345,7 +345,7 @@ I look forward to your response.
         title="Show Up in Person"
         subtitle="City council public comment is your most powerful tool — use it"
       >
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div className="border border-[#1A1A1A] p-5">
               <div className="bebas text-[1.1rem] tracking-[0.02em] mb-3">How public comment works</div>
@@ -429,7 +429,7 @@ Thank you."`}
         title="Spread the Word"
         subtitle="Every person who learns about Flock is a potential organizer"
       >
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           {[
             {
               platform: "Social media",
@@ -472,7 +472,7 @@ Thank you."`}
           ))}
         </div>
 
-        <div className="border border-[#1A1A1A] p-5">
+        <div className="border border-[#1A1A1A] p-4 sm:p-5">
           <div className="text-[0.58rem] tracking-[0.12em] uppercase opacity-40 mb-3">Shareable resources</div>
           <div className="flex flex-wrap gap-3">
             {[
@@ -504,7 +504,7 @@ Thank you."`}
         title="Go Further"
         subtitle="For those ready to escalate — legal action, FOIA requests, legislation"
       >
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
             <div className="border border-[#1A1A1A] p-5">
               <div className="bebas text-[1.1rem] tracking-[0.02em] mb-3 flex items-center gap-2">
@@ -582,16 +582,16 @@ Please provide these records in electronic format within the statutory timeframe
       </ActionSection>
 
       {/* Bottom CTA */}
-      <div className="border-t-2 border-[#1A1A1A] px-8 py-10 flex items-center justify-between">
+      <div className="border-t-2 border-[#1A1A1A] px-5 sm:px-8 py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-          <div className="bebas text-[1.6rem] tracking-[0.02em]">
+          <div className="bebas text-[1.4rem] sm:text-[1.6rem] tracking-[0.02em]">
             ALREADY ORGANIZED? <span className="text-[#C0392B]">GET LISTED.</span>
           </div>
           <div className="text-[0.68rem] opacity-45 tracking-[0.06em] mt-1">
             Add your group to our directory so others in your city can find you.
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <a
             href="/groups"
             className="bg-[#C0392B] text-[#F2EDE4] border border-[#C0392B] px-6 py-2.5 text-[0.72rem] font-bold tracking-[0.1em] uppercase no-underline transition-colors hover:bg-[#F2EDE4] hover:text-[#C0392B]"

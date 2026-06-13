@@ -23,19 +23,18 @@ Ticker component idea — could be added back in later if we want it
 */
 export default function HomePage() {
   return (
-    <main className="h-screen flex flex-col overflow-hidden bg-[#F2EDE4] text-[#1A1A1A] font-mono">
-      
+    <main className="min-h-screen md:h-screen flex flex-col md:overflow-hidden bg-[#F2EDE4] text-[#1A1A1A] font-mono">
 
-      {/* ── Main content — fills remaining height ── */}
-      <div className="flex-1 grid grid-cols-2 min-h-0">
+      {/* ── Main content — fills remaining height on desktop, scrolls on mobile ── */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 min-h-0">
 
         {/* Left — hero copy */}
-        <div className="border-r border-[#1A1A1A] px-10 flex flex-col justify-center gap-8">
+        <div className="border-b md:border-b-0 md:border-r border-[#1A1A1A] px-6 sm:px-10 py-10 md:py-0 flex flex-col justify-center gap-6 md:gap-8">
           <div>
             <span className="text-[0.6rem] tracking-[0.14em] uppercase border border-[#1A1A1A] px-1.5 py-0.5 inline-block mb-5 opacity-60">
               Automated License Plate Surveillance
             </span>
-            <h1 className="bebas text-[clamp(3rem,5.5vw,5.5rem)] leading-[0.92] tracking-[0.02em]">
+            <h1 className="bebas text-[clamp(2.5rem,5.5vw,5.5rem)] leading-[0.92] tracking-[0.02em]">
               YOUR CITY IS<br />
               <span className="text-[#C0392B]">WATCHING</span><br />
               YOUR EVERY<br />MOVE
@@ -49,7 +48,7 @@ export default function HomePage() {
             shared across a network of 2,000+ agencies, often with no judicial oversight and no way to opt out.
           </p>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <a
               href="/issues"
               className="bg-[#C0392B] text-[#F2EDE4] border border-[#C0392B] px-6 py-2.5 text-[0.72rem] font-bold tracking-[0.1em] uppercase no-underline transition-colors hover:bg-[#F2EDE4] hover:text-[#C0392B]"
@@ -66,28 +65,28 @@ export default function HomePage() {
         </div>
 
         {/* Right — deflock.org embed */}
-        <div className="flex flex-col min-h-0">
- 
+        <div className="flex flex-col min-h-[500px] md:min-h-0">
+
           {/* Attribution bar */}
-          <div className="flex-none flex items-center justify-between border-b border-[#1A1A1A] px-4 py-2 bg-[#1A1A1A] text-[#F2EDE4]">
-            <div className="flex items-center gap-3">
+          <div className="flex-none flex items-center justify-between border-b border-[#1A1A1A] px-3 sm:px-4 py-2 bg-[#1A1A1A] text-[#F2EDE4] gap-3">
+            <div className="flex items-center gap-3 min-w-0">
               {/* Camera icon */}
-              <Cctv 
-                className="text-[#C0392B]"
+              <Cctv
+                className="text-[#C0392B] flex-none"
                 size={20}
               />
-              <div>
-                <div className="text-[0.62rem] font-bold tracking-[0.12em] uppercase">
+              <div className="min-w-0">
+                <div className="text-[0.62rem] font-bold tracking-[0.12em] uppercase truncate">
                   FLOCK Camera Map
                 </div>
-                <div className="text-[0.55rem] opacity-50 tracking-[0.06em]">
+                <div className="hidden sm:block text-[0.55rem] opacity-50 tracking-[0.06em]">
                   See known FLOCK cameras near you
                 </div>
               </div>
             </div>
- 
+
             {/* Credit + open link */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-none">
               <div className="text-right">
                 <div className="text-[0.5rem] opacity-40 tracking-[0.1em] uppercase mb-0.5">Powered by</div>
                 <a
@@ -99,37 +98,37 @@ export default function HomePage() {
                   deflock.org ↗
                 </a>
               </div>
-              <div className="w-px h-6 bg-[#F2EDE4] opacity-10" />
+              <div className="hidden sm:block w-px h-6 bg-[#F2EDE4] opacity-10" />
               <a
                 href="https://deflock.org"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[0.55rem] tracking-[0.1em] uppercase opacity-40 hover:opacity-70 transition-opacity no-underline text-[#F2EDE4] border border-[#F2EDE4] border-opacity-20 px-2 py-1"
+                className="hidden sm:inline-block text-[0.55rem] tracking-[0.1em] uppercase opacity-40 hover:opacity-70 transition-opacity no-underline text-[#F2EDE4] border border-[#F2EDE4] border-opacity-20 px-2 py-1"
               >
                 Open full site
               </a>
             </div>
           </div>
- 
+
           {/* Stats strip — compact, above the iframe */}
           <div className="flex-none flex border-b border-[#1A1A1A]">
             {STATS.map((s, i) => (
               <div
                 key={i.toLocaleString()}
-                className={`flex-1 px-4 py-2.5 flex items-center gap-3 ${i < STATS.length - 1 ? "border-r border-[#1A1A1A]" : ""}`}
+                className={`flex-1 px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3 min-w-0 ${i < STATS.length - 1 ? "border-r border-[#1A1A1A]" : ""}`}
               >
-                <div className={`bebas text-[1.6rem] leading-none ${s.red ? "text-[#C0392B]" : ""}`}>
+                <div className={`bebas text-[1.3rem] sm:text-[1.6rem] leading-none flex-none ${s.red ? "text-[#C0392B]" : ""}`}>
                   {s.n}
                 </div>
-                <div className="text-[0.55rem] tracking-[0.1em] uppercase opacity-50 leading-tight">
+                <div className="text-[0.5rem] sm:text-[0.55rem] tracking-[0.1em] uppercase opacity-50 leading-tight min-w-0">
                   {s.label}
                 </div>
               </div>
             ))}
           </div>
- 
+
           {/* Iframe — fills all remaining space */}
-          <div className="flex-1 relative min-h-0">
+          <div className="flex-1 relative min-h-[400px] md:min-h-0">
             <iframe
               title="FLOCK Camera Map — powered by deflock.org"
               src="https://maps.deflock.org"
@@ -138,12 +137,12 @@ export default function HomePage() {
               referrerPolicy="no-referrer"
             />
           </div>
- 
+
         </div>
       </div>
 
       {/* ── Footer ── */}
-      <footer className="flex-none border-t border-[#1A1A1A] px-8 py-3 flex justify-between items-center">
+      <footer className="flex-none border-t border-[#1A1A1A] px-5 sm:px-8 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5 sm:gap-0">
         <div className="bebas text-[1.1rem] tracking-[0.06em]">
           DROP<span className="text-[#C0392B]">FLOCK</span>
         </div>

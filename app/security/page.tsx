@@ -137,7 +137,7 @@ function FindingCard({ f }: { f: (typeof FINDINGS)[0] }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full text-left px-5 py-4 flex items-start gap-4 bg-transparent border-none cursor-pointer group"
+        className="w-full text-left px-4 sm:px-5 py-4 flex items-start gap-3 sm:gap-4 bg-transparent border-none cursor-pointer group"
       >
         <SeverityBadge level={f.severity} />
         <div className="flex-1 min-w-0">
@@ -153,7 +153,7 @@ function FindingCard({ f }: { f: (typeof FINDINGS)[0] }) {
         </span>
       </button>
       {open && (
-        <div className="px-5 pb-5 border-t border-[#1A1A1A] pt-4">
+        <div className="px-4 sm:px-5 pb-5 border-t border-[#1A1A1A] pt-4">
           <p className="text-[0.75rem] leading-[1.9] opacity-70 mb-4 max-w-[600px]">
             {f.body}
           </p>
@@ -177,18 +177,18 @@ export default function SecurityPage() {
     <main className="flex-1 bg-[#F2EDE4] text-[#1A1A1A] font-mono">
 
       {/* Page header */}
-      <div className="border-b-2 border-[#1A1A1A] px-8 py-10 flex items-end justify-between">
+      <div className="border-b-2 border-[#1A1A1A] px-5 sm:px-8 py-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8">
         <div>
           <span className="text-[0.6rem] tracking-[0.14em] uppercase border border-[#1A1A1A] px-1.5 py-0.5 inline-block mb-4 opacity-60">
             Security Research
           </span>
-          <h1 className="bebas text-[clamp(2.8rem,5vw,4.5rem)] leading-[0.9] tracking-[0.02em]">
+          <h1 className="bebas text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.9] tracking-[0.02em]">
             THEY SAID<br />
             <span className="text-[#C0392B]">THEY WERE SECURE.</span><br />
             THEY WERE NOT.
           </h1>
         </div>
-        <p className="text-[0.72rem] leading-[1.8] opacity-60 max-w-[360px] text-right pb-1">
+        <p className="text-[0.72rem] leading-[1.8] opacity-60 max-w-[360px] md:text-right pb-1">
           Independent researchers bought Flock devices off the secondhand market,
           cracked them open, and found 51 documented vulnerabilities — including
           hardcoded passwords, root shell access, and live camera feeds streaming
@@ -197,7 +197,7 @@ export default function SecurityPage() {
       </div>
 
       {/* Stat strip */}
-      <div className="border-b-2 border-[#1A1A1A] grid grid-cols-4">
+      <div className="border-b-2 border-[#1A1A1A] grid grid-cols-2 md:grid-cols-4">
         {[
           { n: "51", label: "Total findings" },
           { n: "22+", label: "CVEs assigned" },
@@ -206,24 +206,24 @@ export default function SecurityPage() {
         ].map((s, i) => (
           <div
             key={i.toLocaleString()}
-            className={`px-6 py-4 flex items-center gap-3 ${i < 3 ? "border-r border-[#1A1A1A]" : ""}`}
+            className={`px-4 sm:px-6 py-4 flex items-center gap-3 border-[#1A1A1A] ${i % 2 === 0 ? "border-r" : ""} ${i < 2 ? "border-b" : ""} md:border-b-0 ${i < 3 ? "md:border-r" : ""}`}
           >
-            <div className="bebas text-[2rem] leading-none text-[#C0392B]">{s.n}</div>
+            <div className="bebas text-[1.6rem] sm:text-[2rem] leading-none text-[#C0392B]">{s.n}</div>
             <div className="text-[0.55rem] tracking-[0.1em] uppercase opacity-50 leading-tight">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Main content — two columns */}
-      <div className="grid grid-cols-[1fr_380px] min-h-0">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] min-h-0">
 
         {/* Left — researcher intro + findings */}
-        <div className="border-r border-[#1A1A1A] px-8 py-8">
+        <div className="border-b lg:border-b-0 lg:border-r border-[#1A1A1A] px-5 sm:px-8 py-8">
 
           {/* Researcher bios */}
           <div className="mb-8">
             <div className="text-[0.6rem] tracking-[0.14em] uppercase opacity-40 mb-4">The Researchers</div>
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div className="border border-[#1A1A1A] p-4">
                 <div className="bebas text-[1.1rem] tracking-[0.02em] mb-1">Jon "GainSec" Gaines</div>
                 <div className="text-[0.62rem] tracking-[0.06em] opacity-50 mb-3">Independent Security Researcher</div>
@@ -272,7 +272,7 @@ export default function SecurityPage() {
         <div className="flex flex-col">
 
           {/* Flock's response callout */}
-          <div className="border-b border-[#1A1A1A] p-6">
+          <div className="border-b border-[#1A1A1A] p-5 sm:p-6">
             <div className="text-[0.55rem] tracking-[0.14em] uppercase opacity-40 mb-3">
               Flock's Official Response — Nov 6, 2025
             </div>
@@ -303,7 +303,7 @@ export default function SecurityPage() {
           </div>
 
           {/* Disclosure timeline */}
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 overflow-y-auto p-5 sm:p-6">
             <div className="text-[0.55rem] tracking-[0.14em] uppercase opacity-40 mb-4">
               Disclosure Timeline
             </div>
@@ -338,9 +338,9 @@ export default function SecurityPage() {
       </div>
 
       {/* Bottom links */}
-      <div className="border-t-2 border-[#1A1A1A] px-8 py-8 flex items-center justify-between">
+      <div className="border-t-2 border-[#1A1A1A] px-5 sm:px-8 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-          <div className="bebas text-[1.4rem] tracking-[0.02em]">READ THE PRIMARY SOURCES</div>
+          <div className="bebas text-[1.2rem] sm:text-[1.4rem] tracking-[0.02em]">READ THE PRIMARY SOURCES</div>
           <div className="text-[0.65rem] opacity-45 tracking-[0.06em] mt-0.5">
             Everything above is documented. Here's where to go deeper.
           </div>

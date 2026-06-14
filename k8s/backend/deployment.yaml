@@ -50,6 +50,15 @@ spec:
             # sealed secret via envFrom below.
             - name: GIN_MODE
               value: "release"
+            # Bearer token required for admin writes (POST/PUT/DELETE).
+            # Sourced from the same SealedSecret as the DB password. The
+            # Go middleware reads it via os.Getenv("ADMIN_TOKEN") at request
+            # time. See k8s/README.md for the kubeseal procedure.
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: admin_token
           envFrom:
             - configMapRef:
                 name: backend-config

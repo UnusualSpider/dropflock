@@ -1,34 +1,44 @@
-"use client";
+import { Cctv } from "lucide-react";
+import { api } from "./lib/api";
 
-import { Cctv } from 'lucide-react';
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
+export default async function HomePage() {
+  let stats: Awaited<ReturnType<typeof api.listStats>> = [];
+  let loadError: string | null = null;
+  try {
+    stats = await api.listStats(["home.cities", "home.plate_reads", "home.opt_out"]);
+  } catch (err) {
+    loadError = (err as Error).message;
+  }
 
-const STATS = [
-  { n: "5,000+", label: "Cities with FLOCK" },
-  { n: "4B+",   label: "Plate reads logged" },
-  { n: "0",     label: "Ways to opt out", red: true },
-];
+  const getStat = (key: string, fallback: string, red = false) => {
+    const found = stats.find((s) => s.key === key);
+    return {
+      n: found?.value ?? fallback,
+      label: found?.label ?? "",
+      red: found ? found.emphasis === "red" : red,
+    };
+  };
 
+  const display = [
+    getStat("home.cities", "5,000+"),
+    getStat("home.plate_reads", "4B+"),
+    getStat("home.opt_out", "0", true),
+  ];
 
-/*
-const TICKER_TEXT =
-  "FLOCK SAFETY OPERATES IN 5,000+ CITIES \u00a0·\u00a0 OVER 4 BILLION LICENSE PLATE READS LOGGED \u00a0·\u00a0 CONTRACTS APPROVED WITHOUT PUBLIC DEBATE \u00a0·\u00a0 YOUR MOVEMENTS ARE BEING RECORDED \u00a0·\u00a0 ADMIN INTERFACES EXPOSED TO THE PUBLIC INTERNET \u00a0·\u00a0 ";
-
-Ticker component idea — could be added back in later if we want it
-      <div className="flex-none overflow-hidden whitespace-nowrap border-b border-[#1A1A1A] bg-[#C0392B] text-[#F2EDE4] py-1.5">
-        <div className="ticker-inner text-[0.65rem] tracking-[0.15em] font-bold">
-          {Array(4).fill(TICKER_TEXT).join("")}
-        </div>
-      </div>
-*/
-export default function HomePage() {
   return (
     <main className="min-h-screen md:h-screen flex flex-col md:overflow-hidden bg-[#F2EDE4] text-[#1A1A1A] font-mono">
 
-      {/* ── Main content — fills remaining height on desktop, scrolls on mobile ── */}
+      {loadError && (
+        <div className="border-b border-[#1A1A1A] px-5 sm:px-8 py-2 text-[0.7rem] opacity-50">
+          Couldn’t reach the stats service: {loadError}. Showing fallback values.
+        </div>
+      )}
+
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 min-h-0">
 
-        {/* Left — hero copy */}
         <div className="border-b md:border-b-0 md:border-r border-[#1A1A1A] px-6 sm:px-10 py-10 md:py-0 flex flex-col justify-center gap-6 md:gap-8">
           <div>
             <span className="text-[0.6rem] tracking-[0.14em] uppercase border border-[#1A1A1A] px-1.5 py-0.5 inline-block mb-5 opacity-60">
@@ -64,17 +74,10 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Right — deflock.org embed */}
         <div className="flex flex-col min-h-[500px] md:min-h-0">
-
-          {/* Attribution bar */}
           <div className="flex-none flex items-center justify-between border-b border-[#1A1A1A] px-3 sm:px-4 py-2 bg-[#1A1A1A] text-[#F2EDE4] gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              {/* Camera icon */}
-              <Cctv
-                className="text-[#C0392B] flex-none"
-                size={20}
-              />
+              <Cctv className="text-[#C0392B] flex-none" size={20} />
               <div className="min-w-0">
                 <div className="text-[0.62rem] font-bold tracking-[0.12em] uppercase truncate">
                   FLOCK Camera Map
@@ -85,7 +88,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Credit + open link */}
             <div className="flex items-center gap-2 sm:gap-3 flex-none">
               <div className="text-right">
                 <div className="text-[0.5rem] opacity-40 tracking-[0.1em] uppercase mb-0.5">Powered by</div>
@@ -110,12 +112,11 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Stats strip — compact, above the iframe */}
           <div className="flex-none flex border-b border-[#1A1A1A]">
-            {STATS.map((s, i) => (
+            {display.map((s, i) => (
               <div
-                key={i.toLocaleString()}
-                className={`flex-1 px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3 min-w-0 ${i < STATS.length - 1 ? "border-r border-[#1A1A1A]" : ""}`}
+                key={s.label}
+                className={`flex-1 px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3 min-w-0 ${i < display.length - 1 ? "border-r border-[#1A1A1A]" : ""}`}
               >
                 <div className={`bebas text-[1.3rem] sm:text-[1.6rem] leading-none flex-none ${s.red ? "text-[#C0392B]" : ""}`}>
                   {s.n}
@@ -127,7 +128,6 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Iframe — fills all remaining space */}
           <div className="flex-1 relative min-h-[400px] md:min-h-0">
             <iframe
               title="FLOCK Camera Map — powered by deflock.org"
@@ -137,11 +137,9 @@ export default function HomePage() {
               referrerPolicy="no-referrer"
             />
           </div>
-
         </div>
       </div>
 
-      {/* ── Footer ── */}
       <footer className="flex-none border-t border-[#1A1A1A] px-5 sm:px-8 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5 sm:gap-0">
         <div className="bebas text-[1.1rem] tracking-[0.06em]">
           DROP<span className="text-[#C0392B]">FLOCK</span>

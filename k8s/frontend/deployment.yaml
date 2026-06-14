@@ -53,6 +53,21 @@ spec:
             # Required for correct redirect/cookie handling.
             - name: NODE_ENV
               value: "production"
+            # Backend URL used by the server-side fetch layer (app/lib/api.ts).
+            # Only used at request time, on the server, so it stays out of the
+            # browser bundle. The in-cluster Service DNS is stable; no
+            # `http://` URL gets bundled into client JS.
+            - name: BACKEND_INTERNAL_URL
+              value: "http://backend.dropflock.svc.cluster.local:8080"
+            # Bearer token used by the /api/groups Next.js route handler when
+            # it forwards form submissions to the backend. Server-only.
+            # Sourced from the SealedSecret at k8s/postgres/secret.yaml
+            # (key: admin_token). See k8s/README.md for how to seal.
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: admin_token
           resources:
             requests:
               cpu: 100m

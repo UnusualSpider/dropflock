@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/UnusualSpider/dropflock.git
+    targetRevision: main
+    path: k8s/postgres
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dropflock
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      # CreateNamespace=false because we manage the namespace via
+      # k8s/namespace.yaml (and namespace-app below). Prevents races.
+      - CreateNamespace=false
+      # ServerSideApply gives cleaner diffs on StatefulSet status fields.
+      - ServerSideApply=true
+      # Prune last means other resources are applied before old ones are
+      # deleted — important for stateful workloads.
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  revisionHistoryLimit: 10

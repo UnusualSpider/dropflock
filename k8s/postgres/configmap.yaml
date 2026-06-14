@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: dropflock
+data:
+  # Database name (must match POSTGRES_DB in the secret).
+  POSTGRES_DB: "dropflock"
+  # Subdirectory inside the mounted volume to hold the actual PG data dir.
+  # Mounting the volume at /var/lib/postgresql and using PGDATA=data keeps the
+  # volume root free for future init scripts / WAL mounts.
+  PGDATA: "data"
+  # Locale / encoding for initdb.
+  POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"

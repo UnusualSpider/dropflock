@@ -1,0 +1,90 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dropflock
+  namespace: dropflock
+  annotations:
+    # ========================================================================
+    # NPM (Nginx Proxy Manager) terminates TLS in front of the cluster, so
+    # ingress-nginx sees plain HTTP on its backend. These annotations prevent
+    # the classic redirect loop and make apps aware of the original scheme.
+    # ========================================================================
+
+    # Disable the "redirect HTTP -> HTTPS" that ingress-nginx normally adds.
+    # Without this, ingress-nginx redirects to https://, NPM re-encrypts the
+    # request, and the browser bounces. Symptoms: "ERR_TOO_MANY_REDIRECTS".
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+    # Force HTTPS for any *internal* redirects (e.g. Express/Next.js
+    # generating absolute URLs from X-Forwarded-Proto).
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+
+    # Tell ingress-nginx to trust the X-Forwarded-* headers from NPM.
+    # This makes the app see the original client IP and protocol, not the
+    # internal hop. Required for: correct redirect URLs, secure cookies,
+    # CSRF protection, rate limiting, audit logs.
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+
+    # Pass the original protocol to upstream. With this header, Next.js and
+    # the Go backend know the request was HTTPS even though the in-cluster
+    # hop is HTTP. Apps that read X-Forwarded-Proto (gin/next both do)
+    # generate correct absolute URLs and set Secure cookies.
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Proto "https";
+      proxy_set_header X-Forwarded-Port "443";
+
+    # Reasonable body size for form posts (FOIA uploads, group submissions).
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+
+    # WebSocket support for any future live features.
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+
+    # Uncomment ONLY if cert-manager is installed in the cluster. Currently
+    # the public TLS is terminated by Nginx Proxy Manager, not cert-manager,
+    # so we don't issue certs in-cluster.
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  # Public hostname. TODO: change to the real domain (e.g. dropflock.org).
+  # Whatever you put here MUST match the host NPM is proxying to this
+  # cluster, and the DNS A/AAAA record must point at the node IPs that
+  # ingress-nginx's NodePort is bound on.
+  rules:
+    - host: dropflock.org
+      http:
+        paths:
+          # ----------------------------------------------------------------
+          # /api/* → backend (Go, port 8080)
+          # Listed first so the matcher is explicit. Both `/api` and `/` are
+          # pathType: Prefix matches; nginx-ingress picks the longest match,
+          # but listing /api first makes the intent obvious to reviewers.
+          # ----------------------------------------------------------------
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 8080
+
+          # ----------------------------------------------------------------
+          # /* → frontend (Next.js, port 3000 via service port 80)
+          # ----------------------------------------------------------------
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+
+  # No TLS section — TLS is terminated by Nginx Proxy Manager outside the
+  # cluster. If you later move TLS termination into the cluster (e.g. add
+  # cert-manager), uncomment the block below and remove the
+  # ssl-redirect: "false" annotation.
+  #
+  # tls:
+  #   - hosts:
+  #       - dropflock.org
+  #     secretName: dropflock-tls

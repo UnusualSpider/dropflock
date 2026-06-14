@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: dropflock
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+      containers:
+        - name: frontend
+          # TODO: build and push before this can run. Image is a placeholder.
+          #
+          #   docker build -t ghcr.io/unusualspider/dropflock-frontend:latest app/
+          #   docker push ghcr.io/unusualspider/dropflock-frontend:latest
+          #
+          # Next.js must be built in standalone output mode (see next.config.ts:
+          # `output: 'standalone'`) for the resulting image to be a small
+          # runtime. The image's CMD should be `node server.js` and listen on
+          # port 3000, or `next start -p 3000`.
+          image: ghcr.io/unusualspider/dropflock-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            # Same-origin API calls. The ingress routes /api to the backend
+            # service, so the frontend can use a relative path.
+            # Override at deploy time if you split into api.dropflock.org.
+            - name: NEXT_PUBLIC_API_URL
+              value: "/api"
+            # Tell Next.js it's behind a proxy (NPM → ingress-nginx → pod).
+            # Required for correct redirect/cookie handling.
+            - name: NODE_ENV
+              value: "production"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          # Next.js standalone output needs .next/ writable. The Dockerfile
+          # should chown the working dir to 65532:65532 at build time.
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: cache
+              mountPath: /app/.next/cache
+      volumes:
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
+        - name: cache
+          emptyDir:
+            sizeLimit: 256Mi

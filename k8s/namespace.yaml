@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dropflock
+  labels:
+    name: dropflock
+    # argocd ArgoCD will manage most labels, but `name` is a useful selector
+    app.kubernetes.io/part-of: dropflock

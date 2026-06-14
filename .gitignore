@@ -34,6 +34,27 @@ yarn-error.log*
 .env*
 *.env
 
+# Kubernetes / Talos — never commit credentials or cluster state
+kubeconfig
+kubeconfig.*
+*.kubeconfig
+talosconfig
+*.talosconfig
+.kube/
+.talos/
+
+# Plaintext secret manifests — use Sealed Secrets (k8s/postgres/secret.yaml)
+# so the real values never reach git. The bootstrap flow generates a
+# `*-plaintext.yaml` file via `kubectl create secret --dry-run`; this rule
+# keeps it out of git even if a developer forgets the final `rm`.
+*-plaintext.yaml
+*-plaintext.yml
+*_plaintext.yaml
+*_plaintext.yml
+
+# Argocd CLI session caches
+.argocd/
+
 # vercel
 .vercel
 

@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: namespace
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/UnusualSpider/dropflock.git
+    targetRevision: main
+    path: k8s
+    directory:
+      # Recurse so the directory-recurse walker picks up namespace.yaml at
+      # the root of k8s/. We use include/exclude patterns to ONLY sync that
+      # single file (otherwise ArgoCD would try to manage all subdirs from
+      # here and conflict with the postgres/backend/frontend/ingress apps).
+      recurse: true
+      include: '{namespace.yaml}'
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dropflock
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  revisionHistoryLimit: 10

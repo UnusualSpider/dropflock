@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: dropflock
+  labels:
+    app: postgres
+spec:
+  # Headless — gives the StatefulSet a stable DNS name (postgres-0.postgres).
+  # Even at 1 replica, this avoids a useless kube-proxy hop and matches the
+  # StatefulSet's `serviceName` field.
+  clusterIP: None
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: postgres

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: dropflock
+data:
+  APP_ENV: "production"
+  # Backend listens on PORT (see backend/internal/config/config.go).
+  PORT: "8080"
+  # Connection target inside the cluster. The postgres Service is headless but
+  # the StatefulSet pod has a stable DNS name: postgres-0.postgres.dropflock.svc
+  # We use the Service name which resolves to that pod.
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "dropflock"
